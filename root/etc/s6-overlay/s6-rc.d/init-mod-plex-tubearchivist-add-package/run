@@ -2,19 +2,16 @@
 
 echo "**** adding plex-tubearchivist deps to package install list ****"
 
-if [ -f /sbin/apk ]; then
-  # Alpine
-  echo "\
-    git \
-    python3 \
-    py3-pip" >> /mod-repo-packages-to-install.list
+if [ -z `command -v git` ]; then
+  if [ -f /sbin/apk ]; then
+    # Alpine
+    echo "\
+      git" >> /mod-repo-packages-to-install.list
+  else
+    ## Ubuntu/others
+    echo "\
+      git" >> /mod-repo-packages-to-install.list
+  fi
 else
-  ## Ubuntu
-  echo "\
-    git \
-    python3 \
-    python3-pip" >> /mod-repo-packages-to-install.list
+  echo "**** plex-tubearchivist deps already installed, skipping ****"
 fi
-   
-echo "\
-    urllib" >> /mod-pip-packages-to-install.list
