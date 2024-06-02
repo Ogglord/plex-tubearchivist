@@ -1,6 +1,6 @@
 # TubeArchivist Plug-In - Docker mod for plex
 
-This mod adds [TubeArchivist Plex Plug-In](https://github.com/tubearchivist/tubearchivist-plex) (Scanner and Plug-In) to Plex, to be downloaded/updated during container start. It also sets the default API key and URL to TubeArchivist.
+This mod adds [TubeArchivist Plex Plug-In](https://github.com/tubearchivist/tubearchivist-plex) (Scanner and Plug-In) to Plex, to be downloaded/updated during container start. It also sets the default API key and URL to TubeArchivist's config.
 
 
 ## Getting started
