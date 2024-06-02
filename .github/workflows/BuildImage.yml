@@ -20,8 +20,8 @@ jobs:
       - name: Tag image
         if: ${{ github.ref == format('refs/heads/{0}', env.BRANCH) && env.ENDPOINT != 'user/endpoint' }}
         run: |
-          docker tag ${{ github.sha }} ${ENDPOINT}
-          docker tag ${{ github.sha }} ${ENDPOINT}:${{ github.sha }}
+          docker tag ${{ github.sha }} ${ENDPOINT_DOCKER}
+          docker tag ${{ github.sha }} ${ENDPOINT_DOCKER}:${{ github.sha }}
           docker tag ${{ github.sha }} ghcr.io/${ENDPOINT}
           docker tag ${{ github.sha }} ghcr.io/${ENDPOINT}:${{ github.sha }}
 
@@ -51,7 +51,7 @@ jobs:
           docker push ghcr.io/${ENDPOINT}
 
       - name: Login to DockerHub
-        if: ${{ github.ref == format('refs/heads/{0}', env.BRANCH) && env.DOCKERUSER && env.DOCKERPASS && env.ENDPOINT != 'user/endpoint' }}
+        if: ${{ github.ref == format('refs/heads/{0}', env.BRANCH) && env.DOCKERUSER && env.DOCKERPASS && env.ENDPOINT_DOCKER != 'user/endpoint' }}
         run: |
           echo ${{ secrets.DOCKERPASS }} | docker login -u ${{ secrets.DOCKERUSER }} --password-stdin
 
