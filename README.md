@@ -34,3 +34,5 @@ services:
 
  - [TubeArchivist Plex Plug-In](https://github.com/tubearchivist/tubearchivist-plex) for creating the plug-in
  - [plex-absolute-hama](https://github.com/linuxserver/docker-mods/tree/plex-absolute-hama) for inspiration
+
+This project is not affiliated with [TubeArchivist Plex Plug-In](https://github.com/tubearchivist/tubearchivist-plex) in any way. Do not post any issues with this script to them etc.
