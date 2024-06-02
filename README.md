@@ -30,6 +30,8 @@ services:
     restart: unless-stopped
 ```
 
+DockerHub: https://hub.docker.com/r/oggelito/plex-tubearchivist
+
 ## Credits:
 
  - [TubeArchivist Plex Plug-In](https://github.com/tubearchivist/tubearchivist-plex) for creating the plug-in
