@@ -42,7 +42,7 @@ if [ ! -f "$scannerdir/TubeArchivist Series Scanner.py" ]; then
     echo "**** no scanner found. copying from repo ****"
     cp -f "/config/tubearchivist/Scanners/Series/TubeArchivist Series Scanner.py" "$scannerdir/TubeArchivist Series Scanner.py"
 else
-    if [ $(date -r "$scannerdir/Absolute Series Scanner.py" +%s) -lt $(date -r "/config/tubearchivist/Scanners/Series/TubeArchivist Series Scanner.py" +%s) ]; then
+    if [ $(date -r "$scannerdir/TubeArchivist Series Scanner.py" +%s) -lt $(date -r "/config/tubearchivist/Scanners/Series/TubeArchivist Series Scanner.py" +%s) ]; then
         echo "**** scanner out of date, copying latest version ****"
         cp -f "/config/tubearchivist/Scanners/Series/TubeArchivist Series Scanner.py" "$scannerdir/TubeArchivist Series Scanner.py"
     fi
