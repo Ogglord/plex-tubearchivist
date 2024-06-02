@@ -4,6 +4,7 @@ on: [push, pull_request, workflow_dispatch]
 
 env:
   ENDPOINT: "ogglord/plex-tubearchivist"
+  ENDPOINT_DOCKER: "oggelito/plex-tubearchivist"
   BRANCH: "master"
 
 jobs:
@@ -55,7 +56,7 @@ jobs:
           echo ${{ secrets.DOCKERPASS }} | docker login -u ${{ secrets.DOCKERUSER }} --password-stdin
 
       - name: Push tags to DockerHub
-        if: ${{ github.ref == format('refs/heads/{0}', env.BRANCH) && env.DOCKERUSER && env.DOCKERPASS && env.ENDPOINT != 'user/endpoint' }}
+        if: ${{ github.ref == format('refs/heads/{0}', env.BRANCH) && env.DOCKERUSER && env.DOCKERPASS && env.ENDPOINT_DOCKER != 'user/endpoint' }}
         run: |
-          docker push ${ENDPOINT}:${{ github.sha }}
-          docker push ${ENDPOINT}
+          docker push ${ENDPOINT_DOCKER}:${{ github.sha }}
+          docker push ${ENDPOINT_DOCKER}
