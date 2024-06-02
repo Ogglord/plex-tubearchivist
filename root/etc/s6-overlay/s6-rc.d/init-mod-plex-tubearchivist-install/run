@@ -1,0 +1,87 @@
+#!/usr/bin/with-contenv bash 
+
+# Pre-requisites check
+
+if [ -z "$TA_API_KEY" ]; then
+    echo "Error: Failed to install TubeArchivist. TA_API_KEY is not set."
+    exit 1
+fi
+
+if [ -z "$TA_URL" ]; then
+    echo "Error: Failed to install TubeArchivist. $TA_URL is not set."
+    exit 1
+fi
+
+
+####################################
+# STEP 1 - Clone/Update TubeArchivist repo
+###################################
+if [ ! -d /config/tubearchivist ]; then
+    echo "**** no scanner repo found, cloning. ****"
+    s6-setuidgid abc git clone --depth 1 https://github.com/tubearchivist/tubearchivist-plex /config/tubearchivist
+else
+    echo "**** updating scanner repo ****"
+    s6-setuidgid abc git -C /config/tubearchivist pull
+fi
+lsiown -R abc:abc /config/tubearchivist
+
+
+####################################
+# STEP 2 - Install/Update Scanner
+###################################
+if [ ! -d "/config/Library/Application Support/Plex Media Server" ]; then
+    echo "**** Creating Scanner and Plug-ins folders ****"
+    mkdir -p "/config/Library/Application Support/Plex Media Server/Scanners/Series" "/config/Library/Application Support/Plex Media Server/Plug-ins"
+    lsiown -R abc:abc "/config/Library/Application Support/Plex Media Server"
+fi
+
+scannerdir="/config/Library/Application Support/Plex Media Server/Scanners/Series"
+
+# copy the scanner if missing or out of date
+if [ ! -f "$scannerdir/TubeArchivist Series Scanner.py" ]; then
+    echo "**** no scanner found. copying from repo ****"
+    cp -f "/config/tubearchivist/Scanners/Series/TubeArchivist Series Scanner.py" "$scannerdir/TubeArchivist Series Scanner.py"
+else
+    if [ $(date -r "$scannerdir/Absolute Series Scanner.py" +%s) -lt $(date -r "/config/tubearchivist/Scanners/Series/TubeArchivist Series Scanner.py" +%s) ]; then
+        echo "**** scanner out of date, copying latest version ****"
+        cp -f "/config/tubearchivist/Scanners/Series/TubeArchivist Series Scanner.py" "$scannerdir/TubeArchivist Series Scanner.py"
+    fi
+fi
+
+## always reset config, since it is just a reflection of the current env variables
+cp -f "/config/tubearchivist/Scanners/Series/sample-ta_config.json" "$scannerdir/ta_config.json"
+sed -i "s,http://tubearchivist.local,${TA_URL},g" "$scannerdir/ta_config.json"
+sed -i "s,xxxxxxxxxxxxxxxx,${TA_API_KEY},g" "$scannerdir/ta_config.json"
+lsiown -R abc:abc "$scannerdir"
+
+####################################
+# STEP 3 - Install/Update Agent
+###################################
+
+plugindir="/config/Library/Application Support/Plex Media Server/Plug-ins"
+# copy the scanner if missing or out of date
+if [ ! -d "$plugindir/TubeArchivist-Agent.bundle" ]; then
+    echo "**** no plugin found. copying from repo ****"
+    cp -R "/config/tubearchivist/." "$plugindir/TubeArchivist-Agent.bundle"
+else
+    if [ $(date -r "$plugindir/TubeArchivist-Agent.bundle/Contents/Code/__init__.py" +%s) -lt $(date -r "/config/tubearchivist/Contents/Code/__init__.py" +%s) ]; then
+        echo "**** plugin out of date, copying latest version ****"
+        cp -f "/config/tubearchivist/Contents/Code/__init__.py" "$plugindir/TubeArchivist-Agent.bundle/Contents/Code/__init__.py"
+        cp -f "/config/tubearchivist/Contents/DefaultPrefs.json" "$plugindir/TubeArchivist-Agent.bundle/Contents/DefaultPrefs.json"
+        cp -f "/config/tubearchivist/Contents/Info.plist" "$plugindir/TubeArchivist-Agent.bundle/Contents/Info.plist"
+    fi
+fi
+###########
+## Note: DefaultPrefs.json will be reset only when the Plug-In is out of date, in case the preferences model changes etc.
+## Due to that. Changes to TA_URL and TA_API_KEY will not necessarily be sync'ed to this file, if you change the variables after the first install.
+## Should not be an issue. DefaultPreferences are only used when creating a new Library in Plex.
+##########
+sed -i "s,http://tubearchivist.local,${TA_URL},g" "$plugindir/TubeArchivist-Agent.bundle/Contents/DefaultPrefs.json"
+sed -i "s,XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX,${TA_API_KEY},g" "$plugindir/TubeArchivist-Agent.bundle/Contents/DefaultPrefs.json"
+
+lsiown -R abc:abc "$plugindir/TubeArchivist-Agent.bundle"
+
+echo "**** tubearchivist install done ****"
+#####
+# DONE
+#####
