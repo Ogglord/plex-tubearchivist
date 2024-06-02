@@ -1,8 +1,20 @@
 #!/usr/bin/with-contenv bash 
 
-if [ -z `command -v git` ]; then
-    echo "**** adding plex-tubearchivist deps to package install list ****"
-    echo "git" >> /mod-repo-packages-to-install.list
+echo "**** adding plex-tubearchivist deps to package install list ****"
+
+if [ -f /sbin/apk ]; then
+  # Alpine
+  echo "\
+    git \
+    python3 \
+    py3-pip" >> /mod-repo-packages-to-install.list
 else
-    echo "**** plex-tubearchivist deps already installed, skipping ****"
+  ## Ubuntu
+  echo "\
+    git \
+    python3 \
+    python3-pip" >> /mod-repo-packages-to-install.list
 fi
+   
+echo "\
+    urllib" >> /mod-pip-packages-to-install.list
