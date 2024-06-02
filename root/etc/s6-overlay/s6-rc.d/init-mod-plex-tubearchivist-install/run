@@ -8,7 +8,7 @@ if [ -z "$TA_API_KEY" ]; then
 fi
 
 if [ -z "$TA_URL" ]; then
-    echo "Error: Failed to install TubeArchivist. $TA_URL is not set."
+    echo "Error: Failed to install TubeArchivist. TA_URL is not set."
     exit 1
 fi
 
