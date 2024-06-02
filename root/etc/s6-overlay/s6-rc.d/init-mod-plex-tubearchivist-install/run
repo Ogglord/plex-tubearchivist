@@ -89,7 +89,7 @@ lsiown -R abc:abc "$plugindir/TubeArchivist-Agent.bundle"
 cd "$scannerdir"
 echo "88a75749f7c7958049530e322b3325a7df7466c0cddaaa27630bf4e85fb66514 TubeArchivist Series Scanner.py" | sha256sum --check --status
 if [ $? -eq 0 ]; then
-  echo "**** patching `TubeArchivist Series Scanner.py` by removing line 118 (bug #67) ****"
+  echo "**** patching TubeArchivist Series Scanner.py by removing line 118 (bug #67) ****"
   sed -i '118d' TubeArchivist\ Series\ Scanner.py
 else
   echo "TubeArchivist Series Scanner.py checksum did not match, not performing any patching"
@@ -97,7 +97,7 @@ fi
 cd "$plugindir/TubeArchivist-Agent.bundle/Contents/Code/"
 echo "8563a3622bf59f726cc22cab1923c4aa6b4da15b02438859f4be2b8d5fdc67ff __init__.py" | sha256sum --check --status
 if [ $? -eq 0 ]; then
-  echo "**** patching `__init__.py` by removing line 200 (bug #67) ****"
+  echo "**** patching __init__.py by removing line 200 (bug #67) ****"
   sed -i '200d' __init__.py
 else
   echo "__init__.py checksum did not match, not performing any patching"
