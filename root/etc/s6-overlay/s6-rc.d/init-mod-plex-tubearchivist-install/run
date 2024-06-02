@@ -66,9 +66,9 @@ if [ ! -d "$plugindir/TubeArchivist-Agent.bundle" ]; then
 else
     if [ $(date -r "$plugindir/TubeArchivist-Agent.bundle/Contents/Code/__init__.py" +%s) -lt $(date -r "/config/tubearchivist/Contents/Code/__init__.py" +%s) ]; then
         echo "**** plugin out of date, copying latest version ****"
-        cp -f "/config/tubearchivist/Contents/Code/__init__.py" "$plugindir/TubeArchivist-Agent.bundle/Contents/Code/__init__.py"
-        cp -f "/config/tubearchivist/Contents/DefaultPrefs.json" "$plugindir/TubeArchivist-Agent.bundle/Contents/DefaultPrefs.json"
-        cp -f "/config/tubearchivist/Contents/Info.plist" "$plugindir/TubeArchivist-Agent.bundle/Contents/Info.plist"
+        cp -f "/config/tubearchivist/Contents/Code/__init__.py"     "$plugindir/TubeArchivist-Agent.bundle/Contents/Code/__init__.py"
+        cp -f "/config/tubearchivist/Contents/DefaultPrefs.json"    "$plugindir/TubeArchivist-Agent.bundle/Contents/DefaultPrefs.json"
+        cp -f "/config/tubearchivist/Contents/Info.plist"           "$plugindir/TubeArchivist-Agent.bundle/Contents/Info.plist"
     fi
 fi
 ###########
