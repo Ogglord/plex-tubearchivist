@@ -63,6 +63,8 @@ plugindir="/config/Library/Application Support/Plex Media Server/Plug-ins"
 if [ ! -d "$plugindir/TubeArchivist-Agent.bundle" ]; then
     echo "**** no plugin found. copying from repo ****"
     cp -R "/config/tubearchivist/." "$plugindir/TubeArchivist-Agent.bundle"
+    ## remove the Scanners folder (we dont have rsync to copy partial)
+    rm -rf "$plugindir/TubeArchivist-Agent.bundle/Scanners"
 else
     if [ $(date -r "$plugindir/TubeArchivist-Agent.bundle/Contents/Code/__init__.py" +%s) -lt $(date -r "/config/tubearchivist/Contents/Code/__init__.py" +%s) ]; then
         echo "**** plugin out of date, copying latest version ****"
